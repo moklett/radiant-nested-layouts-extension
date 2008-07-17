@@ -12,6 +12,22 @@ two-column layout).  Keep your layouts DRY!
 Place the files for this extension within vendor/extensions/nested_layouts in your Radiant application, and
 restart your server.
 
+Via git clone:
+git clone git://github.com/moklett/radiant-nested-layouts-extension.git vendor/extensions/nested_layouts
+
+Via piston (requires piston with git support, and your working copy to be in svn or git):
+piston import git://github.com/moklett/radiant-nested-layouts-extension.git vendor/extensions/nested_layouts
+
+Via download:
+http://github.com/moklett/radiant-nested-layouts-extension/tarball/master
+
+=== Requirements
+
+Radiant CMS 0.6.5 or newer.  (Although I believe 0.6.4 and earlier will work, if you change occurrences of 
+'page.layout' to 'page._layout' in the extension)
+
+http://radiantcms.org/
+
 
 == Usage
 
