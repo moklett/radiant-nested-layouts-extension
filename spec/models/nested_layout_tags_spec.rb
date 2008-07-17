@@ -31,6 +31,12 @@ describe "Nested Layout Tags" do
     @page.layout = @layouts[:nest2]
     @page.render.should == %{<html><body><div id="nest1"><div id="nest2">Hello World!</div></div></body></html>}
   end
+  
+  it 'should render within layouts with multi-word names' do
+    @page.layout = @layouts[:nested_multiword]
+    @page.render.should == %{<html><body><div id="multiword"><div id="nested-multiword">Hello World!</div></div></body></html>}
+  end
+  
 end
 
 def setup_page_and_layouts
@@ -59,8 +65,15 @@ def setup_page_and_layouts
     :nest2 => Layout.create(
       :name => "nest2",
       :content => %{<r:inside_layout name="nest1"><div id="nest2"><r:content_for_layout/></div></r:inside_layout>}
+    ),
+    :multiword => Layout.create(
+      :name => "Multi Word",
+      :content => %{<r:inside_layout name="master"><div id="multiword"><r:content_for_layout/></div></r:inside_layout>}
+    ),
+    :nested_multiword => Layout.create(
+      :name => "Nested Multi Word",
+      :content => %{<r:inside_layout name="Multi Word"><div id="nested-multiword"><r:content_for_layout/></div></r:inside_layout>}
     )
-    
   }
 end
     

@@ -1,3 +1,109 @@
 = Nested Layouts
 
-An extension for Radiant CMS which provides tags for creating nested layouts. 
+An extension for Radiant CMS which provides tags for creating nested layouts.
+
+Nested Layouts enables reuse of a top-level "master" layout (one that contains your <html> tags and the overall
+structure/wrapper of your site) for several different "nested" layouts (i.e. a one-column layout and a
+two-column layout).  Keep your layouts DRY!
+
+
+== Installation
+
+Place the files for this extension within vendor/extensions/nested_layouts in your Radiant application, and
+restart your server.
+
+
+== Usage
+
+Two new tags are provided for use in your layouts:
+
+- <r:content_for_layout/>
+  This tag is replaced by either (1) the contents of an <r:inside_layout> tag which specifies this layout 
+  in its +name+ attribute, or (2) the 'body' part of the page you are rendering (behaving just like a 
+  vanilla <r:content/> tag)
+
+- <r:inside_layout name="[your layout name]">
+  The contents of an inside_layout tag are placed within the named layout, at an instance of a
+  content_for_layout tag.
+  
+=== Example
+
+Give the following Homepage and Layouts...
+
+Homepage:
+  <p>Hello World!</p>
+  
+Layouts:
+  master:
+    <html>
+      <body>
+        <r:content_for_layout/>
+      </body>
+    </html>
+    
+  one-column:
+    <r:inside_layout name="master">
+      <div id="main-column">
+        <r:content_for_layout/>
+      </div>
+    </r:inside_layout>
+    
+  two-column:
+    <r:inside_layout name="master">
+      <div id="left-column">
+        <r:content_for_layout/>
+      </div>
+      <div id="right-column">
+        Sidebar!
+      </div>
+    </r:inside_layout>
+
+You can set the Layout for your Page (within the Radiant admin) to any one of 'master', 'one-column', or
+'two-column'.  The real power of nested_layouts comes from setting your Page layouts to a nested layout 
+(either 'one-column' or 'two-column' in this example).  Then, any changes you make to the top-level 'master'
+layout will be reflected in all of your pages!
+
+Setting the Layout for "Homepage" to "one-column" renders:
+
+  <html>
+    <body>
+      <div id="main-column">
+        <p>Hello World!</p>
+      </div>
+    </body>
+  </html>
+  
+Setting the Layout for "Homepage" to "two-column" renders:
+
+<html>
+  <body>
+    <div id="left-column">
+      <p>Hello World!</p>
+    </div>
+    <div id="right-column">
+      Sidebar!
+    </div>
+  </body>
+</html>
+
+
+You can also nest layout multiple times. Given the above Layouts, and creating a new one:
+
+Layout "nest-me":
+  <r:inside_layout name="one-column">
+    <div id="nest-me">
+      <r:content_for_layout/>
+    </div>
+  </r:inside_layout>
+  
+Setting your "Homepage" layout to "nest-me" would render:
+
+  <html>
+    <body>
+      <div id="main-column">
+        <div id="nest-me"
+          <p>Hello World!</p>
+        </div>
+      </div>
+    </body>
+  </html>
