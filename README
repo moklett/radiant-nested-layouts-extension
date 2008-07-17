@@ -28,7 +28,7 @@ Two new tags are provided for use in your layouts:
   
 === Example
 
-Give the following Homepage and Layouts...
+Given the following Homepage and Layouts...
 
 Homepage:
   <p>Hello World!</p>
