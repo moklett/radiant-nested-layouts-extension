@@ -1,12 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "Nested Layout Tags" do
-  scenario :pages
-
   before :each do
     setup_page_and_layouts
   end
-  
+
   it 'should render without layout' do
     @page.layout = nil
     @page.render.should == 'Hello World!'
@@ -37,6 +35,27 @@ describe "Nested Layout Tags" do
     @page.render.should == %{<html><body><div id="multiword"><div id="nested-multiword">Hello World!</div></div></body></html>}
   end
   
+  context "with <r:layout/> tags" do
+    before(:each) do
+      @page.parts.first.content = "<r:layout/>"
+    end
+
+    it 'should render correctly for a traditional layout' do
+      @page.layout = @layouts[:traditional]
+      @page.render.should == %{<html><body>traditional</body></html>}
+    end
+
+    it 'should render correctly for a non-nested layout' do
+      @page.layout = @layouts[:master]
+      @page.render.should == %{<html><body>master</body></html>}
+    end
+    
+    it 'should render correctly for a nested layout' do
+      @page.layout = @layouts[:nest1]
+      @page.render.should == %{<html><body><div id="nest1">nest1</div></body></html>}
+    end
+    
+  end
 end
 
 def setup_page_and_layouts
